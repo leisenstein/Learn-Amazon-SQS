@@ -17,3 +17,5 @@ AWS Account Information needed:
   - Web.config OR App.config, add keys using either method: 
     - AWSAccessKey/AWSSecretKey 
     - AWSProfileName
+    
+ ### I've heard on some issues with SecretKeys that were caused by the secret key having non-alphanumeric characters.  Resolved by regenerating keys until you get one with ONLY alphanumeric characters.
