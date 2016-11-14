@@ -19,3 +19,16 @@ AWS Account Information needed:
     - AWSProfileName
     
 #### I've heard on some issues with SecretKeys that were caused by the secret key having non-alphanumeric characters.  Resolved by regenerating keys until you get one with ONLY alphanumeric characters.
+
+
+## TestInit
+```cs
+[TestInitialize]
+public void TestInit()
+{
+    amazonSqsConfig = new AmazonSQSConfig();
+    amazonSqsConfig.ServiceURL = queueUrl;
+    amazonSqsConfig.RegionEndpoint = RegionEndpoint.USEast1;
+    amazonSqsClient = new AmazonSQSClient(amazonSqsConfig);
+}
+```
