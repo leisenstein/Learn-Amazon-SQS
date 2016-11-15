@@ -3,7 +3,6 @@
 ## SQS Set Up
 
 Installation
-- Nuget AWSSDK.Core
 - Nuget AWSSDK.SQS
 - AWS Toolkit for Visual Studio [https://aws.amazon.com/visualstudio/ ]
   - Comes with AWS Explorer
