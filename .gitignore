@@ -3,6 +3,7 @@
 # VS config directory
 .vs/
 
+App.conig
 
 # User-specific files
 *.suo
