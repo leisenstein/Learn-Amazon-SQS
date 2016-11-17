@@ -31,3 +31,8 @@ public void TestInit()
     amazonSqsClient = new AmazonSQSClient(amazonSqsConfig);
 }
 ```
+
+### Notes
+- Messages are deleted by using their 'Handler'
+- Message order is not guaranteed
+- Messages can be delivered more than once, so consumer must be able to handle processing the same message more than once
