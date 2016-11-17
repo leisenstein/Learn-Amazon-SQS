@@ -40,7 +40,7 @@ namespace Learn_Amazon_SQS
             var providerQueuePrefix = QUEUEPREFIX;
             var sendMessageRequest = new SendMessageRequest();
             sendMessageRequest.QueueUrl = QUEUEURL;
-            sendMessageRequest.MessageBody = "{TEST: Message}";
+            sendMessageRequest.MessageBody = "";
             
             var response = amazonSqsClient.ListQueues(providerQueuePrefix);
 
