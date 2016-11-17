@@ -63,7 +63,7 @@ namespace Learn_Amazon_SQS
             sendMessageRequest.MessageBody = message;
 
             var response = amazonSqsClient.SendMessage(sendMessageRequest);
-            
+            var result = response.MessageId;
         }
 
         
@@ -89,17 +89,18 @@ namespace Learn_Amazon_SQS
             request.MaxNumberOfMessages = 1;
 
             var response = amazonSqsClient.ReceiveMessage(request);
-            
+            var result = response.Messages;
         }
 
         
 
         public void DeleteFromQueue(string handle)
         {
+            bool result = false;
             DeleteMessageRequest request = new DeleteMessageRequest(QUEUEURL, handle);
-
+            
             var response = amazonSqsClient.DeleteMessage(request);
-
+            result = response.HttpStatusCode == HttpStatusCode.OK;
         }
 
     }
