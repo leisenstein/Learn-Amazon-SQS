@@ -9,14 +9,15 @@ using Amazon;
 using System.Configuration;
 using System.Net;
 using Amazon.SQS.Model;
+using Newtonsoft.Json;
 
 namespace Learn_Amazon_SQS
 {
     public class SqsService
     {
-        public string QUEUEPREFIX { get; set; }
-        public string QUEUEURL { get; set; }
-        public RegionEndpoint REGION { get; set; }
+        private string QUEUEPREFIX { get; set; }
+        private string QUEUEURL { get; set; }
+        private RegionEndpoint REGION { get; set; }
         private AmazonSQSConfig amazonSqsConfig;
         private AmazonSQSClient amazonSqsClient;
 
@@ -27,81 +28,97 @@ namespace Learn_Amazon_SQS
             REGION = region;
 
             amazonSqsConfig = new AmazonSQSConfig();
-            amazonSqsConfig.ServiceURL = QUEUEURL;
+            amazonSqsConfig.ServiceURL = QUEUEURL;  // This does not set it properly, its still NULL
             amazonSqsConfig.RegionEndpoint = REGION;
             amazonSqsClient = new AmazonSQSClient(amazonSqsConfig);
         }
 
-
-
-
-
-
-
-
-
         
-
-        public void ListQueues()
+        // works
+        public List<string> ListQueues()
         {
             var providerQueuePrefix = QUEUEPREFIX;
             var sendMessageRequest = new SendMessageRequest();
-            sendMessageRequest.QueueUrl = amazonSqsConfig.ServiceURL;
+            sendMessageRequest.QueueUrl = QUEUEURL;
             sendMessageRequest.MessageBody = "{TEST: Message}";
+            
+            var response = amazonSqsClient.ListQueues(providerQueuePrefix);
 
-            var listOfQueues = amazonSqsClient.ListQueues(providerQueuePrefix);
-            var queues = listOfQueues.QueueUrls;
+            if (response.HttpStatusCode != HttpStatusCode.OK)
+                return null;
+
+            var result = response.QueueUrls;
+            return result;
         }
 
         
 
-        public void SendQueueMessage(string message)
+        public string SendQueueMessage(string message)
         {
             var providerQueuePrefix = QUEUEPREFIX;
             var sendMessageRequest = new SendMessageRequest();
-            sendMessageRequest.QueueUrl = amazonSqsConfig.ServiceURL;
+            sendMessageRequest.QueueUrl = QUEUEURL;//amazonSqsConfig.ServiceURL; //null
             sendMessageRequest.MessageBody = message;
 
             var response = amazonSqsClient.SendMessage(sendMessageRequest);
+
+            if (response.HttpStatusCode != HttpStatusCode.OK)
+                return null;
+
             var result = response.MessageId;
+            return result;
         }
 
         
 
-        public void TestSendQueueObject()
+        public string SendQueueObject(object o)
         {
-            //LocationModel lm = new LocationModel
-            //{
-            //    Latitude = 43.2321,
-            //    Longitude = -79.8382
-            //};
-            //SendMessageRequest request = new SendMessageRequest(QUEUEURL, lm.ToJson());
-            //var response = amazonSqsClient.SendMessage(request);
+            var oJson = JsonConvert.SerializeObject(o);
+            SendMessageRequest request = new SendMessageRequest(QUEUEURL, oJson);
+            var response = amazonSqsClient.SendMessage(request);
 
-            
+            if (response.HttpStatusCode != HttpStatusCode.OK)
+                return null;
+
+            var result = response.MessageId;
+            return result;
         }
 
-        
 
-        public void ReadFromQueue()
+
+        public Message ReadFromQueue()
         {
             ReceiveMessageRequest request = new ReceiveMessageRequest(QUEUEURL);
             request.MaxNumberOfMessages = 1;
 
             var response = amazonSqsClient.ReceiveMessage(request);
-            var result = response.Messages;
+            if (response.HttpStatusCode != HttpStatusCode.OK || response.Messages.Count == 0)
+                return null;
+
+            var result = response.Messages[0];
+            return result;
         }
 
-        
 
-        public void DeleteFromQueue(string handle)
+        public bool DeleteFromQueue(string handle)
         {
             bool result = false;
             DeleteMessageRequest request = new DeleteMessageRequest(QUEUEURL, handle);
             
             var response = amazonSqsClient.DeleteMessage(request);
             result = response.HttpStatusCode == HttpStatusCode.OK;
+            return result;
         }
 
+
+        public bool PurgeQueue()
+        {
+            bool result = false;
+            PurgeQueueRequest request = new PurgeQueueRequest();
+            request.QueueUrl = QUEUEURL;
+            var response = amazonSqsClient.PurgeQueue(request);
+            result = response.HttpStatusCode == HttpStatusCode.OK;
+            return result;
+        }
     }
 }

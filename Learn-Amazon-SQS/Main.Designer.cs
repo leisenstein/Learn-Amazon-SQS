@@ -36,6 +36,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnRead = new System.Windows.Forms.Button();
             this.btnPurge = new System.Windows.Forms.Button();
+            this.btnGo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblInput
@@ -114,11 +115,22 @@
             this.btnPurge.UseVisualStyleBackColor = true;
             this.btnPurge.Click += new System.EventHandler(this.btnPurge_Click);
             // 
+            // btnGo
+            // 
+            this.btnGo.Location = new System.Drawing.Point(916, 298);
+            this.btnGo.Name = "btnGo";
+            this.btnGo.Size = new System.Drawing.Size(75, 23);
+            this.btnGo.TabIndex = 8;
+            this.btnGo.Text = "GO";
+            this.btnGo.UseVisualStyleBackColor = true;
+            this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
+            // 
             // lblOutput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 336);
+            this.Controls.Add(this.btnGo);
             this.Controls.Add(this.btnPurge);
             this.Controls.Add(this.btnRead);
             this.Controls.Add(this.btnDelete);
@@ -144,6 +156,7 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.Button btnPurge;
+        private System.Windows.Forms.Button btnGo;
     }
 }
 
