@@ -36,5 +36,6 @@ public void TestInit()
 - Messages are deleted by using their 'Handler'
 - Message order is not guaranteed
 - Messages can be delivered more than once, so consumer must be able to handle processing the same message more than once
-- Visibility Timeout - After a Message is READ from the Queue, it becomes INVISIBLE to other uses for a period of time (Default = 1hr)
+- Visibility Timeout - After a Message is READ from the Queue, it becomes INVISIBLE to other consumers for a period of time (Default = 1hr)
 - Message Retention - If a Message is not consumed within this time period, it will automatically be deleted (Default = 14 days)
+- Long polling allows the Amazon SQS service to wait until a message is available in the queue before sending a response. So unless the connection times out, the response to the ReceiveMessage request will contain at least one of the available messages (if any) and up to the maximum number requested in the ReceiveMessage call.
